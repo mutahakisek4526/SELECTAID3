@@ -1,0 +1,22 @@
+<UserControl x:Class="SelectAid.Views.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="Home" FontSize="36" FontWeight="Bold" />
+        <UniformGrid Grid.Row="1" Columns="3" Rows="3">
+            <Button Content="AAC" Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="AAC" />
+            <Button Content="Phrases" Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Phrases" />
+            <Button Content="Keyboard Layouts" Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="KeyboardLayouts" />
+            <Button Content="Settings" Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Settings" />
+            <Button Content="Supporter" Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Supporter" />
+            <Button Content="Training" Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Training" />
+            <Button Content="Logs" Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="Logs" />
+            <Button Content="Backup/Restore" Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="BackupRestore" />
+            <Button Content="PC Overlay" Command="{Binding OpenOverlayCommand}" />
+        </UniformGrid>
+    </Grid>
+</UserControl>

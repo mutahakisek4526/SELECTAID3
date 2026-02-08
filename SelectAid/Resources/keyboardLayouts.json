@@ -1,0 +1,78 @@
+{
+  "Version": 1,
+  "Layouts": [
+    {
+      "Id": "standard",
+      "Name": "Standard 50",
+      "Rows": [
+        {
+          "Keys": [
+            { "Label": "あ", "OutputText": "あ", "Action": "", "Variant": "" },
+            { "Label": "い", "OutputText": "い", "Action": "", "Variant": "" },
+            { "Label": "う", "OutputText": "う", "Action": "", "Variant": "" },
+            { "Label": "え", "OutputText": "え", "Action": "", "Variant": "" },
+            { "Label": "お", "OutputText": "お", "Action": "", "Variant": "" }
+          ]
+        },
+        {
+          "Keys": [
+            { "Label": "か", "OutputText": "か", "Action": "", "Variant": "" },
+            { "Label": "き", "OutputText": "き", "Action": "", "Variant": "" },
+            { "Label": "く", "OutputText": "く", "Action": "", "Variant": "" },
+            { "Label": "け", "OutputText": "け", "Action": "", "Variant": "" },
+            { "Label": "こ", "OutputText": "こ", "Action": "", "Variant": "" }
+          ]
+        },
+        {
+          "Keys": [
+            { "Label": "さ", "OutputText": "さ", "Action": "", "Variant": "" },
+            { "Label": "し", "OutputText": "し", "Action": "", "Variant": "" },
+            { "Label": "す", "OutputText": "す", "Action": "", "Variant": "" },
+            { "Label": "せ", "OutputText": "せ", "Action": "", "Variant": "" },
+            { "Label": "そ", "OutputText": "そ", "Action": "", "Variant": "" }
+          ]
+        },
+        {
+          "Keys": [
+            { "Label": "Back", "OutputText": "", "Action": "Backspace", "Variant": "" },
+            { "Label": "Clear", "OutputText": "", "Action": "Clear", "Variant": "" },
+            { "Label": "Speak", "OutputText": "", "Action": "Speak", "Variant": "" }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "eye",
+      "Name": "Eye Layout",
+      "Rows": [
+        {
+          "Keys": [
+            { "Label": "こんにちは", "OutputText": "こんにちは", "Action": "", "Variant": "" },
+            { "Label": "ありがとう", "OutputText": "ありがとう", "Action": "", "Variant": "" },
+            { "Label": "はい", "OutputText": "はい", "Action": "", "Variant": "" }
+          ]
+        },
+        {
+          "Keys": [
+            { "Label": "いいえ", "OutputText": "いいえ", "Action": "", "Variant": "" },
+            { "Label": "お願いします", "OutputText": "お願いします", "Action": "", "Variant": "" },
+            { "Label": "休憩", "OutputText": "休憩", "Action": "", "Variant": "" }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "scan",
+      "Name": "Scan Layout",
+      "Rows": [
+        {
+          "Keys": [
+            { "Label": "Row1", "OutputText": "", "Action": "", "Variant": "" },
+            { "Label": "Row2", "OutputText": "", "Action": "", "Variant": "" },
+            { "Label": "Row3", "OutputText": "", "Action": "", "Variant": "" }
+          ]
+        }
+      ]
+    }
+  ]
+}

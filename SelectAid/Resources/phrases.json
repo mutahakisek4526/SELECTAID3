@@ -1,0 +1,24 @@
+{
+  "Version": 1,
+  "Scenes": [
+    {
+      "Name": "Daily",
+      "Categories": [
+        {
+          "Name": "Greeting",
+          "Items": [
+            { "Id": "p1", "Text": "おはようございます" },
+            { "Id": "p2", "Text": "こんにちは" }
+          ]
+        },
+        {
+          "Name": "Needs",
+          "Items": [
+            { "Id": "p3", "Text": "水をください" },
+            { "Id": "p4", "Text": "休憩したいです" }
+          ]
+        }
+      ]
+    }
+  ]
+}

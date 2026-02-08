@@ -1,0 +1,22 @@
+<UserControl x:Class="SelectAid.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer Margin="20">
+        <StackPanel>
+            <CheckBox Content="Clear after Speak" IsChecked="{Binding ClearAfterSpeak}" />
+            <TextBlock Text="Dwell (ms)" />
+            <TextBox Text="{Binding DwellMs}" />
+            <TextBlock Text="Scan Interval (ms)" />
+            <TextBox Text="{Binding ScanIntervalMs}" />
+            <TextBlock Text="Confirm Guard (ms)" />
+            <TextBox Text="{Binding ConfirmGuardMs}" />
+            <TextBlock Text="Undo Window (ms)" />
+            <TextBox Text="{Binding UndoWindowMs}" />
+            <TextBlock Text="Auto Stop After Cycles" />
+            <TextBox Text="{Binding AutoStopAfterCycles}" />
+            <TextBlock Text="Mouse Grid Split (2-6)" />
+            <TextBox Text="{Binding MouseGridSplit}" />
+            <Button Content="Save" Command="{Binding SaveCommand}" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
