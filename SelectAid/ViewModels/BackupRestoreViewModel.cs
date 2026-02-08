@@ -35,23 +35,16 @@ public sealed class BackupRestoreViewModel : ObservableObject
     {
         Directory.CreateDirectory(AppPaths.BackupsDirectory);
         var tempPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}_{name}");
+        ZipFile.CreateFromDirectory(AppPaths.AppDataDirectory, tempPath, CompressionLevel.Fastest, false);
         var finalPath = Path.Combine(AppPaths.BackupsDirectory, name);
 
-        try
+        if (File.Exists(finalPath))
         {
-            ZipFile.CreateFromDirectory(AppPaths.AppDataDirectory, tempPath, CompressionLevel.Fastest, false);
-            File.Move(tempPath, finalPath, true);
-            return finalPath;
+            File.Delete(finalPath);
         }
-        catch
-        {
-            if (File.Exists(tempPath))
-            {
-                File.Delete(tempPath);
-            }
 
-            throw;
-        }
+        File.Move(tempPath, finalPath);
+        return finalPath;
     }
 
     private void Backup()
