@@ -68,39 +68,20 @@
                 <TextBlock Text="Controls" FontWeight="Bold" />
                 <ItemsControl ItemsSource="{Binding ControlTargets}">
                     <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>\n                            <UniformGrid Columns=\"4\" Rows=\"2\" />\n                        </ItemsPanelTemplate>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="4" Rows="2" />
+                        </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button Content="{Binding Label}"
-                                    Command="{Binding}">
-                                <Button.Style>
-                                    <Style TargetType="Button">
-                                        <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                                <Setter Property="BorderThickness" Value="4" />
-                                                <Setter Property="Background" Value="{StaticResource AccentBrush}" />
-                                            </DataTrigger>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding Label}" Value="Buzzer" />
-                                                    <Condition Binding="{Binding DataContext.BuzzerActive, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True" />
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property="Background" Value="Red" />
-                                            </MultiDataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                            </Button>
+                                    Command="{Binding Command}"
+                                    BorderBrush="{StaticResource PrimaryBrush}"
+                                    BorderThickness="2"
+                                    Background="{StaticResource AccentBrush}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <UniformGrid Columns="3" Rows="1">
-                    <Button Content="Pause" Command="{Binding DataContext.PauseCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
-                    <Button Content="Overlay" Command="{Binding DataContext.OverlayCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
-                    <Button Content="Home" Command="{Binding DataContext.HomeCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
-                </UniformGrid>
             </StackPanel>
         </Border>
     </Grid>

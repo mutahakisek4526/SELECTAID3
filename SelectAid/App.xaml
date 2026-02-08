@@ -4,9 +4,14 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Theme/Friendly.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="CardBrush" Color="#FFF3F4F6" />
+            <SolidColorBrush x:Key="PrimaryBrush" Color="#FF2F5B8E" />
+            <SolidColorBrush x:Key="AccentBrush" Color="#FFE3EFFC" />
+            <Style TargetType="Button">
+                <Setter Property="Padding" Value="12,6" />
+                <Setter Property="Margin" Value="6" />
+                <Setter Property="FontSize" Value="18" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

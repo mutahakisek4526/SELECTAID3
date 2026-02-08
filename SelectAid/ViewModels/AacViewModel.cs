@@ -1,52 +1,78 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Media;
-using System.Windows;
 using SelectAid.Models;
-using SelectAid.Services;
-using UITimer = System.Timers.Timer;
 
 namespace SelectAid.ViewModels;
 
-public sealed class AacViewModel : ObservableObject, Scan.IScanContext
+public sealed class AacViewModel : ObservableObject
 {
     private readonly Stack<string> _undoStack = new();
-    private readonly UITimer _buzzerTimer;
     private string _composeText = string.Empty;
     private KeyboardLayout _currentLayout;
-    private bool _buzzerActive;
 
     public AacViewModel()
     {
-        var persistence = AppServices.Persistence;
-        _currentLayout = persistence.KeyboardLayouts.Layouts.First();
-        History = new ObservableCollection<HistoryItem>(persistence.History.Items);
-        SpeakCommand = new RelayCommand(_ => Speak());
+        var defaultLayout = new KeyboardLayout
+        {
+            Id = "basic",
+            Name = "Basic",
+            Rows = new List<KeyboardRow>
+            {
+                new()
+                {
+                    Keys = new List<KeyDefinition>
+                    {
+                        new() { Label = "A", OutputText = "A" },
+                        new() { Label = "I", OutputText = "I" },
+                        new() { Label = "U", OutputText = "U" },
+                        new() { Label = "E", OutputText = "E" },
+                        new() { Label = "O", OutputText = "O" }
+                    }
+                },
+                new()
+                {
+                    Keys = new List<KeyDefinition>
+                    {
+                        new() { Label = "Ka", OutputText = "Ka" },
+                        new() { Label = "Sa", OutputText = "Sa" },
+                        new() { Label = "Ta", OutputText = "Ta" },
+                        new() { Label = "Na", OutputText = "Na" },
+                        new() { Label = "Ha", OutputText = "Ha" }
+                    }
+                },
+                new()
+                {
+                    Keys = new List<KeyDefinition>
+                    {
+                        new() { Label = "Space", OutputText = " " },
+                        new() { Label = "Back", Action = "Backspace" },
+                        new() { Label = "Clear", Action = "Clear" }
+                    }
+                }
+            }
+        };
+
+        Layouts = new List<KeyboardLayout> { defaultLayout };
+        _currentLayout = defaultLayout;
+        History = new ObservableCollection<HistoryItem>
+        {
+            new() { Text = "こんにちは", Timestamp = "00:00" },
+            new() { Text = "よろしくお願いします", Timestamp = "00:01" }
+        };
+
         ClearCommand = new RelayCommand(_ => Clear());
         BackspaceCommand = new RelayCommand(_ => Backspace());
         UndoCommand = new RelayCommand(_ => Undo(), _ => _undoStack.Count > 0);
-        BuzzerCommand = new RelayCommand(_ => Buzzer());
-        SelectLayoutCommand = new RelayCommand(param => SelectLayout(param?.ToString() ?? string.Empty));
+        SpeakCommand = new RelayCommand(_ => Speak());
+        SelectLayoutCommand = new RelayCommand(param => SelectLayout(param as KeyboardLayout));
         KeyPressCommand = new RelayCommand(param => OnKeyPress(param as KeyDefinition));
 
-        ControlTargets = new List<Scan.ScanTargetViewModel>
+        ControlTargets = new List<ControlTarget>
         {
-            new Scan.ScanTargetViewModel(\"Speak\", SpeakCommand),
-            new Scan.ScanTargetViewModel(\"Backspace\", BackspaceCommand),
-            new Scan.ScanTargetViewModel(\"Clear\", ClearCommand),
-            new Scan.ScanTargetViewModel(\"Undo\", UndoCommand),
-            new Scan.ScanTargetViewModel(\"Buzzer\", BuzzerCommand)
-        };
-
-        _buzzerTimer = new UITimer(300) { AutoReset = false };
-        _buzzerTimer.Elapsed += (_, _) =>
-        {
-            Application.Current.Dispatcher.BeginInvoke(() =>
-            {
-                BuzzerActive = false;
-            });
+            new("Speak", SpeakCommand),
+            new("Backspace", BackspaceCommand),
+            new("Clear", ClearCommand),
+            new("Undo", UndoCommand)
         };
     }
 
@@ -64,28 +90,16 @@ public sealed class AacViewModel : ObservableObject, Scan.IScanContext
         set => SetProperty(ref _composeText, value);
     }
 
-    public bool BuzzerActive
-    {
-        get => _buzzerActive;
-        set => SetProperty(ref _buzzerActive, value);
-    }
-
     public RelayCommand SpeakCommand { get; }
     public RelayCommand ClearCommand { get; }
     public RelayCommand BackspaceCommand { get; }
     public RelayCommand UndoCommand { get; }
-    public RelayCommand BuzzerCommand { get; }
     public RelayCommand SelectLayoutCommand { get; }
     public RelayCommand KeyPressCommand { get; }
 
-    public List<Scan.ScanTargetViewModel> ControlTargets { get; }
+    public List<ControlTarget> ControlTargets { get; }
 
-    public IReadOnlyList<KeyboardLayout> Layouts => AppServices.Persistence.KeyboardLayouts.Layouts;
-
-    public IReadOnlyList<Scan.IScanTarget> GetScanTargets()
-    {
-        return ControlTargets;
-    }
+    public IReadOnlyList<KeyboardLayout> Layouts { get; }
 
     private void OnKeyPress(KeyDefinition? key)
     {
@@ -104,12 +118,6 @@ public sealed class AacViewModel : ObservableObject, Scan.IScanContext
         if (key.Action == "Clear")
         {
             Clear();
-            return;
-        }
-
-        if (key.Action == "Speak")
-        {
-            Speak();
             return;
         }
 
@@ -134,15 +142,9 @@ public sealed class AacViewModel : ObservableObject, Scan.IScanContext
             return;
         }
 
-        AppServices.Speech.Speak(ComposeText);
-        var item = new HistoryItem { Text = ComposeText, Timestamp = DateTime.Now.ToString("s") };
+        var item = new HistoryItem { Text = ComposeText, Timestamp = "Now" };
         History.Insert(0, item);
-        AppServices.Persistence.History.Items.Insert(0, item);
-        AppServices.Persistence.SaveHistory();
-        if (AppServices.Persistence.Settings.ClearAfterSpeak)
-        {
-            ComposeText = string.Empty;
-        }
+        ComposeText = string.Empty;
     }
 
     private void Clear()
@@ -168,21 +170,11 @@ public sealed class AacViewModel : ObservableObject, Scan.IScanContext
         }
 
         ComposeText = _undoStack.Pop();
-        AppServices.Metrics.RecordUndo();
         UndoCommand.RaiseCanExecuteChanged();
     }
 
-    private void Buzzer()
+    private void SelectLayout(KeyboardLayout? layout)
     {
-        BuzzerActive = true;
-        SystemSounds.Beep.Play();
-        _buzzerTimer.Stop();
-        _buzzerTimer.Start();
-    }
-
-    private void SelectLayout(string layoutId)
-    {
-        var layout = AppServices.Persistence.KeyboardLayouts.Layouts.FirstOrDefault(item => item.Id == layoutId);
         if (layout != null)
         {
             CurrentLayout = layout;
