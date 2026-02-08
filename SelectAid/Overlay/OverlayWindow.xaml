@@ -1,0 +1,33 @@
+<Window x:Class="SelectAid.Overlay.OverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Overlay" Height="500" Width="800"
+        WindowStyle="None" AllowsTransparency="True" Background="#B0000000"
+        Topmost="True">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Button Content="Transparent" Click="OnToggleTransparent" />
+            <Button Content="MouseGrid" Click="OnMouseGrid" />
+            <Button Content="Pause" Click="OnPause" />
+            <Button Content="Home" Click="OnClose" />
+        </StackPanel>
+        <UniformGrid Grid.Row="1" Columns="4" Rows="3">
+            <Button x:Name="LeftButton" Content="Left" Click="OnLeftClick" />
+            <Button x:Name="RightButton" Content="Right" Click="OnRightClick" />
+            <Button x:Name="DoubleButton" Content="Double" Click="OnDoubleClick" />
+            <Button x:Name="DragButton" Content="Drag" Click="OnDragToggle" />
+            <Button x:Name="ScrollUpButton" Content="Scroll Up" Click="OnScrollUp" />
+            <Button x:Name="ScrollDownButton" Content="Scroll Down" Click="OnScrollDown" />
+            <Button x:Name="BackButton" Content="Back" Click="OnBack" />
+            <Button x:Name="TabButton" Content="Tab" Click="OnTab" />
+            <Button x:Name="ShiftTabButton" Content="Shift+Tab" Click="OnShiftTab" />
+            <Button x:Name="EnterButton" Content="Enter" Click="OnEnter" />
+            <Button x:Name="SpaceButton" Content="Space" Click="OnSpace" />
+            <Button x:Name="BackspaceButton" Content="Backspace" Click="OnBackspace" />
+        </UniformGrid>
+    </Grid>
+</Window>
