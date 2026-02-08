@@ -31,14 +31,35 @@ public sealed class BackupRestoreViewModel : ObservableObject
     public RelayCommand BackupCommand { get; }
     public RelayCommand RestoreCommand { get; }
 
+    private string CreateZipToBackups(string name)
+    {
+        Directory.CreateDirectory(AppPaths.BackupsDirectory);
+        var tempPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}_{name}");
+        var finalPath = Path.Combine(AppPaths.BackupsDirectory, name);
+
+        try
+        {
+            ZipFile.CreateFromDirectory(AppPaths.AppDataDirectory, tempPath, CompressionLevel.Fastest, false);
+            File.Move(tempPath, finalPath, true);
+            return finalPath;
+        }
+        catch
+        {
+            if (File.Exists(tempPath))
+            {
+                File.Delete(tempPath);
+            }
+
+            throw;
+        }
+    }
+
     private void Backup()
     {
         try
         {
-            Directory.CreateDirectory(AppPaths.BackupsDirectory);
             var name = $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.zip";
-            var path = Path.Combine(AppPaths.BackupsDirectory, name);
-            ZipFile.CreateFromDirectory(AppPaths.AppDataDirectory, path, CompressionLevel.Fastest, false);
+            CreateZipToBackups(name);
             Status = $"Backup created: {name}";
         }
         catch (Exception ex)
@@ -75,8 +96,7 @@ public sealed class BackupRestoreViewModel : ObservableObject
 
         try
         {
-            var safety = Path.Combine(AppPaths.BackupsDirectory, $"pre_restore_{DateTime.Now:yyyyMMdd_HHmmss}.zip");
-            ZipFile.CreateFromDirectory(AppPaths.AppDataDirectory, safety, CompressionLevel.Fastest, false);
+            CreateZipToBackups($"pre_restore_{DateTime.Now:yyyyMMdd_HHmmss}.zip");
             ZipFile.ExtractToDirectory(latest, AppPaths.AppDataDirectory, true);
             Status = "Restore completed. Restart the app.";
         }
